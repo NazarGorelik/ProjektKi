@@ -29,6 +29,7 @@ public class BasicAI {
         return bestMove;
     }
 
+    // for testing
     public static Move findBestMoveMinimax(Board board, int depth) {
         Player currentPlayer = board.getToMove();
         List<Move> moves = board.generateMoves();

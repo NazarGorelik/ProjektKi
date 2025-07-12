@@ -2,8 +2,6 @@ package main;
 
 import main.AlphaBeta.AlphaBetaAI;
 import main.AlphaBeta.BasicAI;
-import main.AlphaBeta.Evaluation;
-import main.AlphaBeta.Minimax;
 import main.models.Move;
 import main.models.Player;
 
@@ -13,7 +11,8 @@ public class Main {
     public static long nodesVisited = 0;
     static final int SEARCH_DEPTH = 5;
     public static void main(String[] args) {
-      String fen = "r1r11RG1r1r1/2r11r12/3r13/7/3b13/2b11b12/b1b11BG1b1b1 b";
+      String fen = "r1r11RG1r1r1/2r11r12/3r13/3b13/7/2b11b12/b1b11BG1b1b1 r";
+//      String fen = "3RG1r1r1/2r11r12/1r21r13/7/3b23/4b12/b1b11BG1b1b1 b";
       Board board = new Board(fen);
       List<Move> moves = board.generateMoves();
 
@@ -40,33 +39,21 @@ public class Main {
       }
 
         //für M und A Zustände mit der Zeit und best Moves
-        // for (int depth = 1; depth <= 6; depth++) {
-        //     System.out.println("\nTiefe " + depth + ":");
+//         for (int depth = 1; depth <= 7; depth++) {
+//             System.out.println("\nTiefe " + depth + ":");
+//
+//             nodesVisited = 0;
+//             long startTimeA = System.nanoTime();
+//             AlphaBetaAI.alphaBeta(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true, Player.RED);
+//             long endTimeA = System.nanoTime();
+//             System.out.println("Alpha-Beta:  " + nodesVisited + " Zustände besucht");
+//             long durationNsA = endTimeA - startTimeA;
+//             double durationMsA = durationNsA / 1_000_000.0;
+//             System.out.println(durationMsA + " ms");
+//             System.out.println("Best Move: " + BasicAI.findBestMove(board, depth));
+//         }
 
-        //     nodesVisited = 0;
-        //     long startTimeM = System.nanoTime();
-        //     Minimax.minimax(board, depth, true, Player.RED);
-        //     long endTimeM = System.nanoTime();
-        //     System.out.println("Minimax:     " + nodesVisited + " Zustände besucht");
-        //     long durationNsM = endTimeM - startTimeM;
-        //     double durationMsM = durationNsM / 1_000_000.0;
-        //     System.out.println(durationMsM + " ms");
-        //     System.out.println("Best Move: " + BasicAI.findBestMove(board, depth));
-
-        //     System.out.println();
-
-        //     nodesVisited = 0;
-        //     long startTimeA = System.nanoTime();
-        //     AlphaBetaAI.alphaBeta(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, true, Player.RED);
-        //     long endTimeA = System.nanoTime();
-        //     System.out.println("Alpha-Beta:  " + nodesVisited + " Zustände besucht");
-        //     long durationNsA = endTimeA - startTimeA;
-        //     double durationMsA = durationNsA / 1_000_000.0;
-        //     System.out.println(durationMsA + " ms");
-        //     System.out.println("Best Move: " + BasicAI.findBestMoveMinimax(board, depth));
-        // }
-
-        //run perft
+//        run perft
 //         long nodes = Perft.perft(board, SEARCH_DEPTH);
 //         System.out.println("Perft to depth " + SEARCH_DEPTH + ": " + nodes + " nodes");
     }
