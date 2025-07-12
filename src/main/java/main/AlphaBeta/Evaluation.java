@@ -12,6 +12,23 @@ import java.util.List;
 // negative -> bad for the player
 // zero -> balanced board (same probabilities of winning)
 public class Evaluation {
+
+    public static int evaluateStatic(Board board, Player perspective) {
+        int score = 0;
+
+        for (int y = 0; y < 7; y++) {
+            for (int x = 0; x < 7; x++) {
+                Piece p = board.board[y][x];
+                if (p == null || p.player == null) continue;
+
+                int value = p.isGuard ? 1000 : 50 + (p.height * 10);
+                score += (p.player == perspective) ? value : -value;
+            }
+        }
+
+        return score;
+    }
+
     public static int evaluate(Board board, Player perspective)
     {
         int materialScore = 0;

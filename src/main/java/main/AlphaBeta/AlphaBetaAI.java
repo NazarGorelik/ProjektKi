@@ -1,15 +1,18 @@
 package main.AlphaBeta;
 
+import main.AlphaBeta.MoveOrderingHeuristik.Heuristik;
+import main.AlphaBeta.QuiescenceSearch.QuiescenceSearch;
+import main.AlphaBeta.TranspositionTable.TranspositionTable;
+import main.AlphaBeta.TranspositionTable.Zobrist;
 import main.Board;
 import main.Main;
 import main.MoveHandler;
 import main.models.Move;
 import main.models.MoveContext;
 import main.models.Player;
-import main.models.TableEntry;
+import main.AlphaBeta.TranspositionTable.TableEntry;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AlphaBetaAI {
 
@@ -18,7 +21,7 @@ public class AlphaBetaAI {
         return Zobrist.hash(b);
     }
 
-    public static int alphaBeta(Board board,int depth,int alpha, int beta,boolean maximizingPlayer,Player rootSide) {
+    public static int alphaBeta(Board board,int depth,int alpha, int beta,boolean maximizingPlayer, Player player) {
         Main.nodesVisited++;
         long key = hash(board);
         TableEntry hit = TT.get(key);
@@ -35,15 +38,31 @@ public class AlphaBetaAI {
                 return hit.score; // cut
         }
 
-        if (depth == 0 || board.generateMoves().isEmpty())
-            return Evaluation.evaluate(board, rootSide);
+        // Am Suchhorizont: Quiescence Search statt direkter Evaluation
+//        if (depth == 0)
+//            return QuiescenceSearch.quiescence(board, alpha, beta, player, 0);
+//
+//        List<Move> moves = Heuristik.sortMovesHeuristically(board, board.generateMoves(), player);
+//
+//        // Spiel beendet
+//        if (moves.isEmpty()) {
+//            return Evaluation.evaluate(board, player);
+//        }
 
         List<Move> moves = board.generateMoves();
+        if (depth == 0 || board.generateMoves().isEmpty())
+            return Evaluation.evaluate(board, player);
+
         if (hit != null && hit.bestMove != null) {          // PV move first
             moves.remove(hit.bestMove);
             moves.add(0, hit.bestMove);
         }
-        moves = sortMovesHeuristically(board, moves, rootSide);
+        moves = Heuristik.sortMovesHeuristically(board, moves, player);
+
+        if (hit != null && hit.bestMove != null) {          // PV move first
+            moves.remove(hit.bestMove);
+            moves.add(0, hit.bestMove);
+        }
 
         Move bestMove = null;
         int bestScore = maximizingPlayer ? Integer.MIN_VALUE : Integer.MAX_VALUE;
@@ -51,16 +70,22 @@ public class AlphaBetaAI {
         for (Move m : moves) {
             MoveContext ctx = MoveHandler.applyMove(board, m);
             int score = alphaBeta(board, depth - 1, alpha, beta,
-                    !maximizingPlayer, rootSide);
+                    !maximizingPlayer, player);
             MoveHandler.undoMove(board, ctx);
 
             if (maximizingPlayer) {
-                if (score > bestScore) { bestScore = score; bestMove = m; }
+                if (score > bestScore) {
+                    bestScore = score;
+                }
                 alpha = Math.max(alpha, score);
             } else {
-                if (score < bestScore) { bestScore = score; bestMove = m; }
+                if (score < bestScore) {
+                    bestScore = score;
+                }
                 beta  = Math.min(beta,  score);
             }
+            bestMove = m;
+
             if (alpha >= beta) break;                       // α-β cut
         }
 
@@ -70,35 +95,5 @@ public class AlphaBetaAI {
         TT.store(key, depth, bestScore, (byte)flag, bestMove);
 
         return bestScore;
-    }
-
-    // Zugsortierungsheuristiken (Move Ordering Heuristics)
-    private static List<Move> sortMovesHeuristically(Board board, List<Move> moves, Player player) {
-        return moves.stream()
-                .sorted((m1, m2) -> Integer.compare(
-                        scoreMove(board, m2, player),
-                        scoreMove(board, m1, player)))
-                .collect(Collectors.toList());
-    }
-
-    private static int scoreMove(Board board, Move move, Player player) {
-        int score = 0;
-        int index = move.to.y * 7 + move.to.x;
-
-        // Prefer capturing opponent pieces
-        long mask = 1L << (move.to.y * 7 + move.to.x);
-        boolean isOpponentPiece = (player == Player.RED)
-                ? (board.bluePieces & mask) != 0
-                : (board.redPieces  & mask) != 0;
-        if (isOpponentPiece) score += 10;
-
-        // Prefer capturing guards
-        boolean isGuard = (board.guards >>> index & 1L) == 1L;
-        if (isGuard) score += 5;
-
-        // Prefer moves with higher step count
-        score += move.step;
-
-        return score;
     }
 }

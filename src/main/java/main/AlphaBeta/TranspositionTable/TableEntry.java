@@ -1,4 +1,6 @@
-package main.models;
+package main.AlphaBeta.TranspositionTable;
+
+import main.models.Move;
 
 public final class TableEntry {
     public static final byte EXACT = 0, LOWER = 1, UPPER = 2;

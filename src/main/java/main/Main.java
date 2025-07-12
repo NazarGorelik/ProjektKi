@@ -12,7 +12,6 @@ public class Main {
     static final int SEARCH_DEPTH = 5;
     public static void main(String[] args) {
       String fen = "r1r11RG1r1r1/2r11r12/3r13/3b13/7/2b11b12/b1b11BG1b1b1 r";
-//      String fen = "3RG1r1r1/2r11r12/1r21r13/7/3b23/4b12/b1b11BG1b1b1 b";
       Board board = new Board(fen);
       List<Move> moves = board.generateMoves();
 
@@ -37,6 +36,10 @@ public class Main {
           System.err.println("Fehler beim Starten des API-Servers: " + e.getMessage());
           e.printStackTrace();
       }
+
+//        Board b = new Board("r1r11RG1r1r1/2r11r12/3r13/7/3b1b12/2b14/b1b11BG1b1b1 r");
+//        int score = AlphaBetaAI.alphaBeta(b, 6, Integer.MIN_VALUE, Integer.MAX_VALUE, true, b.getToMove());
+//        System.out.println("Bewertung: " + score);
 
         //für M und A Zustände mit der Zeit und best Moves
 //         for (int depth = 1; depth <= 7; depth++) {

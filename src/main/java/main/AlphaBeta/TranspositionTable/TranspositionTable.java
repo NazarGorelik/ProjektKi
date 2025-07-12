@@ -1,7 +1,6 @@
-package main.AlphaBeta;
+package main.AlphaBeta.TranspositionTable;
 
 import main.models.Move;
-import main.models.TableEntry;
 
 import java.util.concurrent.ConcurrentHashMap;
 

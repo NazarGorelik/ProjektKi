@@ -559,7 +559,7 @@ async function makeComputerMove() {
         return;
     } catch (error) {
         console.error('Fehler beim Backend-KI-Zug:', error);
-        statusElement.textContent = "Fehler beim KI-Zug. Bitte versuche es erneut.";
+        statusElement.textContent = "Fehler beim KI-Zug. Bitte versuche es erneut. " + error;
 
         // Bei Fehlern bleibt das Spiel stehen und der Spieler muss einen neuen Zug machen
         // oder die Seite neu laden

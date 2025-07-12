@@ -1,4 +1,4 @@
-package main.AlphaBeta;
+package main.AlphaBeta.TranspositionTable;
 
 /* Zobrist.java */
 import main.Board;
