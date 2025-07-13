@@ -13,6 +13,7 @@ public class TranspositionTable {
 
     public void store(long key, int depth, int score, byte flag, Move bestMove) {
         TableEntry cur = map.get(key);
-        if (cur == null || depth >= cur.depth) map.put(key, new TableEntry(depth, score, flag, bestMove));
+        if (cur == null || depth >= cur.depth)
+            map.put(key, new TableEntry(depth, score, flag, bestMove));
     }
 }

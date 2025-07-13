@@ -16,10 +16,7 @@ public class QuiescenceSearch {
     private static final int QS_MAX_DEPTH   = 3;
     private static final int DELTA_MARGIN   = 120;
 
-    public static int quiescence(Board b,
-                                 int alpha, int beta,
-                                 Player rootSide,
-                                 int depth /* neu */) {
+    public static int quiescence(Board b,int alpha, int beta, Player rootSide, int depth) {
 
         int standPat = Evaluation.evaluateStatic(b, rootSide);
         if (standPat >= beta)  return beta;

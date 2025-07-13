@@ -15,7 +15,7 @@ public class Main {
     static final int SEARCH_DEPTH = 5;
     public static void main(String[] args) {
 //        GeneSet bestGenes = GeneticTrainer.train(GeneticDataset.trainingBoards);
-        String fen = "r1r11RG1r1r1/2r11r12/3r13/3b13/7/2b11b12/b1b11BG1b1b1 r";
+        String fen = "4r22/4b22/2b1RG3/7/3r23/1b11BG3/b15b1 r";
           Board board = new Board(fen);
 //          List<Move> moves = board.generateMoves();
 //
@@ -42,7 +42,7 @@ public class Main {
 //          }
 
         //für M und A Zustände mit der Zeit und best Moves
-         for (int depth = 1; depth <= 7; depth++) {
+         for (int depth = 1; depth <= 9; depth++) {
              System.out.println("\nTiefe " + depth + ":");
 
              nodesVisited = 0;
